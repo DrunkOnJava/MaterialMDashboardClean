@@ -17,12 +17,20 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Website URL - in a real app, this would be configurable
-  const websiteUrl = "https://blue-mountain-wicks.netlify.app";
+  // URL for the website - development and production
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  // In development, use localhost with port 5174 (Vite's default second port)
+  // In production, use the deployed Netlify URL
+  const websiteUrl = isDevelopment 
+    ? "http://localhost:5174" 
+    : "https://blue-mountain-wicks.netlify.app";
 
-  // Function to handle external website navigation
+  // Function to handle external website navigation with admin preview
   const handleNavigateToWebsite = () => {
-    window.open(`${websiteUrl}?admin-preview=true`, "_blank");
+    // Add admin preview parameter for dashboard users
+    const adminPreviewUrl = `${websiteUrl}?admin-preview=true&auth=example-admin-token-123`;
+    window.open(adminPreviewUrl, "_blank");
   };
 
   // Get frame width based on selected device
@@ -117,12 +125,12 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
       
       <div className="overflow-auto p-4 bg-surfaceslightgray-10 rounded-lg">
         <div className={getFrameClass()}>
-          {/* Create an iframe to show the actual website */}
+          {/* Create an iframe to show the actual website with admin preview */}
           <iframe
-            src={`${websiteUrl}?admin-preview=true`}
+            src={`${websiteUrl}?admin-preview=true&auth=example-admin-token-123`}
             title="Blue Mountain Wicks Website"
             className="w-full h-full border-0"
-            sandbox="allow-same-origin allow-scripts allow-forms"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
           ></iframe>
         </div>
       </div>
