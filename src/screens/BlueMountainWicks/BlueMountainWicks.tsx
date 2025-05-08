@@ -17,7 +17,8 @@ import {
   Users,
   Truck,
   ExternalLink,
-  Globe
+  Globe,
+  Layout
 } from "lucide-react";
 
 // Import mock data
@@ -36,6 +37,7 @@ const ProductList = React.lazy(() => import("./sections/Products/ProductList"));
 const OrderList = React.lazy(() => import("./sections/Orders/OrderList"));
 const ProductDetail = React.lazy(() => import("./sections/Products/ProductDetail"));
 const CheckoutManagement = React.lazy(() => import("./sections/Checkout/CheckoutManagement"));
+const WebsiteManagement = React.lazy(() => import("./sections/WebsiteManagement/WebsiteManagement"));
 
 export const BlueMountainWicksContent = (): JSX.Element => {
   // State hooks
@@ -164,6 +166,10 @@ export const BlueMountainWicksContent = (): JSX.Element => {
                     <Settings className="h-4 w-4" />
                     <span>Settings</span>
                   </TabsTrigger>
+                  <TabsTrigger value="website" className="flex items-center gap-1 px-4">
+                    <Layout className="h-4 w-4" />
+                    <span>Website</span>
+                  </TabsTrigger>
                 </TabsList>
 
                 {/* Dashboard Tab */}
@@ -265,6 +271,13 @@ export const BlueMountainWicksContent = (): JSX.Element => {
                       </p>
                     </CardContent>
                   </Card>
+                </TabsContent>
+
+                {/* Website Management Tab */}
+                <TabsContent value="website">
+                  <React.Suspense fallback={<div>Loading website management...</div>}>
+                    <WebsiteManagement />
+                  </React.Suspense>
                 </TabsContent>
               </Tabs>
             </main>

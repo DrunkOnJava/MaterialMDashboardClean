@@ -22,20 +22,34 @@ interface SubNavItem {
 
 // Define navigation sections
 const dashboardItems: NavItem[] = [
-  { icon: "/group-15.png", label: "eCommerce", path: "/", isActive: true },
-  { icon: "/group-16.png", label: "Analytics", path: "/analytics" },
-  { icon: "/group-17.png", label: "CRM", path: "/crm" },
-  { icon: "/group-20.png", label: "Blue Mountain Wicks", path: "/blue-mountain-wicks" },
+  { icon: "/group-15.png", label: "Dashboard", path: "/", isActive: true },
+  { icon: "/group-23.png", label: "Projects", path: "/projects" },
+  { icon: "/group-22.png", label: "Calendar", path: "/calendar" },
+  { icon: "/group-24.png", label: "Tasks", path: "/tasks" },
 ];
 
+// Project items
+const projectItems: NavItem[] = [
+  { icon: "/group-20.png", label: "Blue Mountain Wicks", path: "/blue-mountain-wicks" },
+  // More projects can be added here in the future
+];
+
+// Tools items
+const toolItems: NavItem[] = [
+  { icon: "/group-25.png", label: "Notes", path: "/notes" },
+  { icon: "/group-26.png", label: "Documents", path: "/documents" },
+  { icon: "/group-27.png", label: "Reports", path: "/reports" },
+  { icon: "/group-28.png", label: "Analytics", path: "/analytics" },
+];
+
+// Consolidated UI Components
 const appItems: NavItem[] = [
-  { icon: "/group-18.png", label: "eCommerce", path: "/ecommerce" },
   { 
     icon: "/group-19.png", 
-    label: "Components", 
+    label: "UI Components", 
     hasSubmenu: true,
     submenuItems: [
-      { label: "Chip", path: "/ui-components" },
+      // Components submenu
       { label: "Cards", path: "/components/cards" },
       { label: "Alerts", path: "/components/alerts" },
       { label: "Modals", path: "/components/modals" },
@@ -45,13 +59,7 @@ const appItems: NavItem[] = [
       { label: "Avatars", path: "/components/avatars" },
       { label: "Progress", path: "/components/progress" },
       { label: "Pagination", path: "/components/pagination" },
-    ]
-  },
-  { 
-    icon: "/group-20.png", 
-    label: "Buttons", 
-    hasSubmenu: true,
-    submenuItems: [
+      // Buttons submenu
       { label: "Primary Buttons", path: "/buttons/primary" },
       { label: "Secondary Buttons", path: "/buttons/secondary" },
       { label: "Outline Buttons", path: "/buttons/outline" },
@@ -63,36 +71,18 @@ const appItems: NavItem[] = [
       { label: "Link Buttons", path: "/buttons/link" },
       { label: "Loading Buttons", path: "/buttons/loading" },
       { label: "Grouped Buttons", path: "/buttons/grouped" },
-    ]
-  },
-  { 
-    icon: "/group-21.png", 
-    label: "Forms", 
-    hasSubmenu: true,
-    submenuItems: [
+      // Forms submenu
       { label: "Input Fields", path: "/forms/input-fields" },
       { label: "Select Fields", path: "/forms/select-fields" },
       { label: "Checkbox & Radio", path: "/forms/checkbox-radio" },
       { label: "Form Validation", path: "/forms/validation" },
-    ]
-  },
-  { 
-    icon: "/group-5.png", 
-    label: "Charts", 
-    hasSubmenu: true,
-    submenuItems: [
+      // Charts submenu
       { label: "Bar Charts", path: "/charts/bar-charts" },
       { label: "Line Charts", path: "/charts/line-charts" },
       { label: "Pie Charts", path: "/charts/pie-charts" },
       { label: "Area Charts", path: "/charts/area-charts" },
       { label: "Scatter Charts", path: "/charts/scatter-charts" },
-    ]
-  },
-  { 
-    icon: "/group-10.png", 
-    label: "UI", 
-    hasSubmenu: true,
-    submenuItems: [
+      // UI submenu
       { label: "Typography", path: "/ui/typography" },
       { label: "Colors", path: "/ui/colors" },
       { label: "Icons", path: "/ui/icons" },
@@ -111,13 +101,6 @@ const appItems: NavItem[] = [
       { label: "Notifications", path: "/examples/notifications" },
     ]
   },
-  { icon: "/group-22.png", label: "Calendar", path: "/calendar" },
-  { icon: "/group-23.png", label: "Kanban", path: "/kanban" },
-  { icon: "/group-24.png", label: "Chat", path: "/chat" },
-  { icon: "/group-25.png", label: "Notes", path: "/notes" },
-  { icon: "/group-26.png", label: "Contact Table", path: "/contact-table" },
-  { icon: "/group-27.png", label: "Contact List", path: "/contact-list" },
-  { icon: "/group-28.png", label: "Invoice", path: "/invoice" },
 ];
 
 // Define icon sidebar items
@@ -139,7 +122,7 @@ const iconSidebarItems2 = [
 
 export const SidebarByAnima = (): JSX.Element => {
   const location = useLocation();
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(["Buttons", "Components", "Forms", "Charts", "UI", "Example Pages"]); // Default expand menus
+  const [expandedMenus, setExpandedMenus] = useState<string[]>(["UI Components", "Example Pages"]); // Default expand menus
 
   const toggleSubmenu = (label: string) => {
     setExpandedMenus(prev => 
@@ -210,11 +193,11 @@ export const SidebarByAnima = (): JSX.Element => {
       {/* Main sidebar with text */}
       <ScrollArea className="flex-1 h-full bg-blackwhite shadow-[1px_0px_10px_#0000000d]">
         <div className="flex flex-col items-start gap-3.5 px-4 py-[30px]">
-          {/* Dashboards section */}
+          {/* Core Navigation */}
           <div className="flex flex-col items-start w-full">
             <div className="flex items-start gap-2.5 px-0 py-2 w-full">
               <div className="w-fit mt-[-1.00px] font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
-                Dashboards
+                Main Navigation
               </div>
             </div>
 
@@ -250,11 +233,94 @@ export const SidebarByAnima = (): JSX.Element => {
 
           <Separator className="w-full" />
 
-          {/* Apps section */}
+          {/* Projects section */}
+          <div className="flex flex-col items-start w-full">
+            <div className="flex items-start justify-between gap-2.5 px-2 py-2 w-full">
+              <div className="w-fit mt-[-1.00px] font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
+                Projects
+              </div>
+              <button className="text-light-themeprimaryblue hover:text-light-themeprimaryblue-dark text-sm">
+                + New
+              </button>
+            </div>
+
+            {projectItems.map((item, index) => (
+              <Link 
+                key={index}
+                to={item.path || "#"}
+                className={`flex items-center gap-2.5 px-4 py-3 w-full ${
+                  isActive(item.path || "") 
+                    ? "bg-light-themeprimarylight-blue rounded-[30px]"
+                    : ""
+                }`}
+              >
+                <div className="w-5 h-5">
+                  <img
+                    className="w-[17px] h-[17px]"
+                    alt={item.label}
+                    src={item.icon}
+                  />
+                </div>
+                <div
+                  className={`flex-1 mt-[-1.00px] font-normal text-[15px] leading-[21px] ${
+                    isActive(item.path || "") 
+                      ? "text-light-themeprimaryblue"
+                      : "text-blackblack-100"
+                  }`}
+                >
+                  {item.label}
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <Separator className="w-full" />
+
+          {/* Tools section */}
           <div className="flex flex-col items-start w-full">
             <div className="flex items-start gap-2.5 px-0 py-2 w-full">
               <div className="w-fit mt-[-1.00px] font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
-                Apps
+                Tools
+              </div>
+            </div>
+
+            {toolItems.map((item, index) => (
+              <Link 
+                key={index}
+                to={item.path || "#"}
+                className={`flex items-center gap-2.5 px-4 py-3 w-full ${
+                  isActive(item.path || "") 
+                    ? "bg-light-themeprimarylight-blue rounded-[30px]"
+                    : ""
+                }`}
+              >
+                <div className="w-5 h-5">
+                  <img
+                    className="w-[17px] h-[17px]"
+                    alt={item.label}
+                    src={item.icon}
+                  />
+                </div>
+                <div
+                  className={`flex-1 mt-[-1.00px] font-normal text-[15px] leading-[21px] ${
+                    isActive(item.path || "") 
+                      ? "text-light-themeprimaryblue"
+                      : "text-blackblack-100"
+                  }`}
+                >
+                  {item.label}
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <Separator className="w-full" />
+
+          {/* UI Components section */}
+          <div className="flex flex-col items-start w-full">
+            <div className="flex items-start gap-2.5 px-0 py-2 w-full">
+              <div className="w-fit mt-[-1.00px] font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
+                UI Components
               </div>
             </div>
 

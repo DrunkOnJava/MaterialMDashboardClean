@@ -18,11 +18,11 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Website URL - in a real app, this would be configurable
-  const websiteUrl = "https://example.com/blue-mountain-wicks";
+  const websiteUrl = "https://blue-mountain-wicks.netlify.app";
 
   // Function to handle external website navigation
   const handleNavigateToWebsite = () => {
-    window.open(websiteUrl, "_blank");
+    window.open(`${websiteUrl}?admin-preview=true`, "_blank");
   };
 
   // Get frame width based on selected device
@@ -117,56 +117,13 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
       
       <div className="overflow-auto p-4 bg-surfaceslightgray-10 rounded-lg">
         <div className={getFrameClass()}>
-          {/* Mock website frame - in a real app, this would be an iframe */}
-          <div className="w-full h-full overflow-hidden rounded-lg flex flex-col">
-            {/* Mock website header */}
-            <div className="bg-[#1E3A5F] text-white p-4 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-[#1E3A5F] font-bold">BM</span>
-                </div>
-                <span className="font-bold">Blue Mountain Wicks</span>
-              </div>
-              <div className="flex gap-4">
-                <span>Shop</span>
-                <span>Collections</span>
-                <span>About</span>
-                <span>Contact</span>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="icon" className="text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                </Button>
-                <Button variant="ghost" size="icon" className="text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                </Button>
-              </div>
-            </div>
-            
-            {/* Mock website hero */}
-            <div className="relative h-[300px] bg-gradient-to-r from-[#1E3A5F] to-[#2C5282] flex items-center justify-center text-white p-8 text-center">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">Handcrafted Candles from the Mountains</h1>
-                <p className="mb-4">Premium soy candles inspired by nature</p>
-                <Button className="bg-white text-[#1E3A5F] hover:bg-gray-100">Shop Now</Button>
-              </div>
-            </div>
-            
-            {/* Mock product carousel */}
-            <div className="p-8 bg-white">
-              <h2 className="text-xl font-bold mb-4 text-center">Best-selling Candles</h2>
-              <div className="flex gap-4 overflow-x-auto pb-4">
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <div key={index} className="flex-shrink-0 w-[200px]">
-                    <div className="bg-gray-100 w-full h-[200px] rounded-lg mb-2"></div>
-                    <h3 className="font-medium">Mountain Pine</h3>
-                    <p className="text-gray-600 text-sm">Fresh pine & cedar</p>
-                    <p className="font-bold mt-1">$28.99</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          {/* Create an iframe to show the actual website */}
+          <iframe
+            src={`${websiteUrl}?admin-preview=true`}
+            title="Blue Mountain Wicks Website"
+            className="w-full h-full border-0"
+            sandbox="allow-same-origin allow-scripts allow-forms"
+          ></iframe>
         </div>
       </div>
     </div>
