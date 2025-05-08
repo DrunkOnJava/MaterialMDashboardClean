@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/ta
 import { Button } from "../../components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 import { NewProjectForm } from "./components/NewProjectForm";
+import { ProjectCard } from "./components/ProjectCard";
 import { format } from "date-fns";
 import { 
   BarChart3, 
@@ -18,7 +19,12 @@ import {
   Plus, 
   Search, 
   Settings, 
-  Users 
+  Users,
+  PlusCircle,
+  Briefcase,
+  Target,
+  TrendingUp,
+  LineChart
 } from "lucide-react";
 
 // Define project interface
@@ -87,64 +93,84 @@ const ProjectStatsSection: React.FC<ProjectStatsSectionProps> = ({ projects }) =
     
     return dueDate > today && dueDate <= thirtyDaysFromNow;
   }).length;
+
+  // Calculate completion percentage across all projects
+  const averageCompletion = projects.length > 0 
+    ? Math.round(projects.reduce((sum, project) => sum + project.completion, 0) / projects.length) 
+    : 0;
+  
+  const stats = [
+    {
+      title: "Total Projects",
+      value: totalProjects,
+      icon: <Briefcase className="h-5 w-5" />,
+      change: "+8%",
+      isPositive: true,
+      bgColor: "bg-light-themeprimarylight-blue",
+      textColor: "text-light-themeprimaryblue"
+    },
+    {
+      title: "Active Tasks",
+      value: activeTasks,
+      icon: <ListChecks className="h-5 w-5" />,
+      change: "+5%",
+      isPositive: true,
+      bgColor: "bg-actionsuccesslight",
+      textColor: "text-actionsuccess"
+    },
+    {
+      title: "Team Members",
+      value: totalTeamMembers,
+      icon: <Users className="h-5 w-5" />,
+      change: "0%",
+      isPositive: true,
+      bgColor: "bg-light-themesecondarylight-purple",
+      textColor: "text-light-themesecondarypurple"
+    },
+    {
+      title: "Upcoming Deadlines",
+      value: upcomingDeadlines,
+      icon: <Target className="h-5 w-5" />,
+      change: "-12%",
+      isPositive: false,
+      bgColor: "bg-actionwarninglight",
+      textColor: "text-actionwarning"
+    },
+    {
+      title: "Avg. Completion",
+      value: `${averageCompletion}%`,
+      icon: <TrendingUp className="h-5 w-5" />,
+      change: "+15%",
+      isPositive: true,
+      bgColor: "bg-light-themeprimarylight-blue",
+      textColor: "text-light-themeprimaryblue"
+    }
+  ];
   
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blackblack-60">Total Projects</p>
-              <h3 className="text-2xl font-medium mt-1">{totalProjects}</h3>
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-6">
+      {stats.map((stat, index) => (
+        <Card key={index} className="border-0 shadow-sm">
+          <CardContent className="px-6 py-5">
+            <div className="flex items-center gap-4">
+              <div className={`w-10 h-10 ${stat.bgColor} rounded-full flex items-center justify-center ${stat.textColor}`}>
+                {stat.icon}
+              </div>
+              <div>
+                <p className="text-xs font-medium text-blackblack-60">{stat.title}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-xl font-semibold">{stat.value}</p>
+                  <span className={`text-xs px-1.5 py-0.5 rounded-full flex items-center ${
+                    stat.isPositive ? 'bg-actionsuccesslight text-actionsuccess' : 'bg-actionwarninglight text-actionwarning'
+                  }`}>
+                    {stat.change}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="w-12 h-12 bg-light-themeprimarylight-blue rounded-full flex items-center justify-center">
-              <FolderOpen className="h-6 w-6 text-light-themeprimaryblue" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blackblack-60">Active Tasks</p>
-              <h3 className="text-2xl font-medium mt-1">{activeTasks}</h3>
-            </div>
-            <div className="w-12 h-12 bg-actionsuccesslight rounded-full flex items-center justify-center">
-              <ListChecks className="h-6 w-6 text-actionsuccess" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blackblack-60">Team Members</p>
-              <h3 className="text-2xl font-medium mt-1">{totalTeamMembers}</h3>
-            </div>
-            <div className="w-12 h-12 bg-light-themesecondarylight-purple rounded-full flex items-center justify-center">
-              <Users className="h-6 w-6 text-light-themesecondarypurple" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blackblack-60">Upcoming Deadlines</p>
-              <h3 className="text-2xl font-medium mt-1">{upcomingDeadlines}</h3>
-            </div>
-            <div className="w-12 h-12 bg-actionwarninglight rounded-full flex items-center justify-center">
-              <Clock className="h-6 w-6 text-actionwarning" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };
@@ -153,157 +179,291 @@ const ProjectStatsSection: React.FC<ProjectStatsSectionProps> = ({ projects }) =
 interface ProjectsListSectionProps {
   projects: Project[];
   onAddProject: (project: Project) => void;
+  viewType?: 'grid' | 'table';
 }
 
-const ProjectsListSection: React.FC<ProjectsListSectionProps> = ({ projects, onAddProject }) => (
-  <Card className="mb-6">
-    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-      <CardTitle className="text-lg font-normal">Projects</CardTitle>
-      <NewProjectForm onAddProject={onAddProject} />
-    </CardHeader>
-    <CardContent className="p-0">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-surfaceslightgray-10">
-            <tr>
-              <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Project</th>
-              <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Status</th>
-              <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Progress</th>
-              <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Due Date</th>
-              <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Team</th>
-              <th className="py-3 px-6 text-xs font-medium text-blackblack-60 tracking-wider text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-surfaceslightgray-10 bg-white">
-            {projects.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="py-6 px-6 text-center text-blackblack-60">
-                  No projects found. Click "Add Project" to create your first project.
-                </td>
-              </tr>
-            ) : (
-              projects.map((project) => (
-                <tr key={project.id} className="hover:bg-surfaceslightgray-10/50">
-                  <td className="py-4 px-6">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 bg-light-themeprimarylight-blue rounded-md flex items-center justify-center">
-                        <span className="text-light-themeprimaryblue font-medium">{project.name.substring(0, 2)}</span>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-blackblack-100">{project.name}</div>
-                        <div className="text-xs text-blackblack-60">{project.description}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      project.status === "In Progress" ? "bg-actionsuccesslight text-actionsuccess" :
-                      project.status === "Planning" ? "bg-light-themeprimarylight-blue text-light-themeprimaryblue" :
-                      project.status === "On Hold" ? "bg-actionwarninglight text-actionwarning" :
-                      project.status === "Completed" ? "bg-light-themesecondarylight-purple text-light-themesecondarypurple" :
-                      "bg-surfaceslightgray-10 text-blackblack-60"
-                    }`}>
-                      {project.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center">
-                      <div className="w-full bg-surfaceslightgray-10 rounded-full h-2.5">
-                        <div className="bg-light-themeprimaryblue h-2.5 rounded-full" style={{ width: `${project.completion}%` }}></div>
-                      </div>
-                      <span className="text-xs font-medium text-blackblack-60 ml-2">{project.completion}%</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center">
-                      <CalendarDays className="h-4 w-4 text-blackblack-60 mr-2" />
-                      <span className="text-sm text-blackblack-100">{project.dueDate}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex -space-x-2">
-                      {[...Array(project.members)].map((_, i) => (
-                        <Avatar key={i} className="h-7 w-7 border-2 border-white">
-                          <AvatarFallback className="bg-light-themeprimarylight-blue text-light-themeprimaryblue text-xs">
-                            {String.fromCharCode(65 + i)}
-                          </AvatarFallback>
-                        </Avatar>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-right">
-                    <Button variant="outline" size="sm" className="mr-2" asChild>
-                      <a href={project.path || "#"}>View</a>
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+const ProjectsListSection: React.FC<ProjectsListSectionProps> = ({ 
+  projects, 
+  onAddProject,
+  viewType = 'grid'
+}) => {
+  const handleViewProject = (id: string) => {
+    console.log(`Viewing project: ${id}`);
+    // In a real app, you might navigate to the project detail page here
+  };
+
+  return (
+    <div className="mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-medium">Projects</h2>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1.5 text-light-themeprimaryblue hover:text-light-themeprimaryblue hover:bg-light-themeprimarylight-blue/50"
+            onClick={() => {}}
+          >
+            <PlusCircle size={16} />
+            Add Project
+          </Button>
+        </div>
       </div>
-    </CardContent>
-  </Card>
-);
+
+      {viewType === 'grid' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.length === 0 ? (
+            <Card className="col-span-full py-12">
+              <CardContent className="flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 bg-light-themeprimarylight-blue rounded-full flex items-center justify-center text-light-themeprimaryblue mb-4">
+                  <Briefcase size={24} />
+                </div>
+                <h3 className="text-lg font-medium mb-2">No Projects Found</h3>
+                <p className="text-blackblack-60 mb-6 max-w-md">You don't have any projects yet. Click the button below to create your first project.</p>
+                <Button
+                  variant="default"
+                  className="flex items-center gap-1.5"
+                  onClick={() => {}}
+                >
+                  <PlusCircle size={16} />
+                  Create Project
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            projects.map(project => (
+              <ProjectCard 
+                key={project.id} 
+                project={project} 
+                onView={handleViewProject}
+              />
+            ))
+          )}
+        </div>
+      ) : (
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-surfaceslightgray-10">
+                  <tr>
+                    <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Project</th>
+                    <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Status</th>
+                    <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Progress</th>
+                    <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Due Date</th>
+                    <th className="py-3 px-6 text-left text-xs font-medium text-blackblack-60 tracking-wider">Team</th>
+                    <th className="py-3 px-6 text-xs font-medium text-blackblack-60 tracking-wider text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-surfaceslightgray-10 bg-white">
+                  {projects.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-6 px-6 text-center text-blackblack-60">
+                        No projects found. Click "Add Project" to create your first project.
+                      </td>
+                    </tr>
+                  ) : (
+                    projects.map((project) => (
+                      <tr key={project.id} className="hover:bg-surfaceslightgray-10/50">
+                        <td className="py-4 px-6">
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0 h-10 w-10 bg-light-themeprimarylight-blue rounded-md flex items-center justify-center">
+                              <span className="text-light-themeprimaryblue font-medium">{project.name.substring(0, 2)}</span>
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-medium text-blackblack-100">{project.name}</div>
+                              <div className="text-xs text-blackblack-60">{project.description}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6">
+                          <span className={`px-2 py-1 text-xs rounded-full ${
+                            project.status === "In Progress" ? "bg-actionsuccesslight text-actionsuccess" :
+                            project.status === "Planning" ? "bg-light-themeprimarylight-blue text-light-themeprimaryblue" :
+                            project.status === "On Hold" ? "bg-actionwarninglight text-actionwarning" :
+                            project.status === "Completed" ? "bg-light-themesecondarylight-purple text-light-themesecondarypurple" :
+                            "bg-surfaceslightgray-10 text-blackblack-60"
+                          }`}>
+                            {project.status}
+                          </span>
+                        </td>
+                        <td className="py-4 px-6">
+                          <div className="flex items-center">
+                            <div className="w-full bg-surfaceslightgray-10 rounded-full h-2.5">
+                              <div className="bg-light-themeprimaryblue h-2.5 rounded-full" style={{ width: `${project.completion}%` }}></div>
+                            </div>
+                            <span className="text-xs font-medium text-blackblack-60 ml-2">{project.completion}%</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6">
+                          <div className="flex items-center">
+                            <CalendarDays className="h-4 w-4 text-blackblack-60 mr-2" />
+                            <span className="text-sm text-blackblack-100">{project.dueDate}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6">
+                          <div className="flex -space-x-2">
+                            {[...Array(project.members)].map((_, i) => (
+                              <Avatar key={i} className="h-7 w-7 border-2 border-white">
+                                <AvatarFallback className="bg-light-themeprimarylight-blue text-light-themeprimaryblue text-xs">
+                                  {String.fromCharCode(65 + i)}
+                                </AvatarFallback>
+                              </Avatar>
+                            ))}
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 text-right">
+                          <Button variant="outline" size="sm" className="mr-2" asChild>
+                            <a href={project.path || "#"}>View</a>
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+};
 
 // Recent Activity Section
-const RecentActivitySection = () => (
-  <Card className="mb-6">
-    <CardHeader className="pb-2 space-y-0">
-      <CardTitle className="text-lg font-normal">Recent Activity</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-4">
-        <div className="flex items-start gap-4">
-          <div className="bg-light-themeprimarylight-blue rounded-full p-2">
-            <FileText className="h-4 w-4 text-light-themeprimaryblue" />
-          </div>
-          <div>
-            <div className="flex items-center">
-              <span className="font-medium">Website content updated</span>
-              <span className="text-xs text-blackblack-60 ml-2">2 hours ago</span>
-            </div>
-            <p className="text-sm text-blackblack-60">Jane Smith updated the Blue Mountain Wicks website content</p>
+const RecentActivitySection = () => {
+  const activities = [
+    {
+      icon: <FileText className="h-4 w-4" />,
+      title: "Website content updated",
+      description: "Jane Smith updated the Blue Mountain Wicks website content",
+      time: "2 hours ago",
+      iconBg: "bg-light-themeprimarylight-blue",
+      iconColor: "text-light-themeprimaryblue"
+    },
+    {
+      icon: <ListChecks className="h-4 w-4" />,
+      title: "Task completed",
+      description: "John Doe completed \"Implement product details page\"",
+      time: "4 hours ago",
+      iconBg: "bg-actionsuccesslight",
+      iconColor: "text-actionsuccess"
+    },
+    {
+      icon: <Clock className="h-4 w-4" />,
+      title: "Deadline approaching",
+      description: "Project \"Blue Mountain Wicks\" is due in 3 days",
+      time: "Yesterday",
+      iconBg: "bg-actionwarninglight",
+      iconColor: "text-actionwarning"
+    },
+    {
+      icon: <Users className="h-4 w-4" />,
+      title: "New team member",
+      description: "Sarah Johnson joined the Blue Mountain Wicks project",
+      time: "2 days ago",
+      iconBg: "bg-light-themesecondarylight-purple",
+      iconColor: "text-light-themesecondarypurple"
+    },
+    {
+      icon: <MessageSquare className="h-4 w-4" />,
+      title: "Comment added",
+      description: "Mike Wilson commented on the homepage redesign task",
+      time: "3 days ago",
+      iconBg: "bg-light-themeprimarylight-blue",
+      iconColor: "text-light-themeprimaryblue"
+    }
+  ];
+
+  return (
+    <Card className="mb-6 border-0 shadow-sm">
+      <CardHeader className="pb-2 pt-5 px-6">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-medium">Recent Activity</CardTitle>
+          <Button variant="ghost" size="sm" className="text-sm text-light-themeprimaryblue hover:text-light-themeprimaryblue hover:bg-light-themeprimarylight-blue/50">
+            View All
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent className="px-6 py-2">
+        <div className="relative">
+          {/* Timeline connector */}
+          <div className="absolute left-[19px] top-0 bottom-0 w-[2px] bg-surfaceslightgray-10"></div>
+          
+          <div className="space-y-5">
+            {activities.map((activity, index) => (
+              <div key={index} className="flex items-start gap-4 relative z-10">
+                <div className={`rounded-full p-2 ${activity.iconBg} ${activity.iconColor}`}>
+                  {activity.icon}
+                </div>
+                <div>
+                  <div className="flex flex-col sm:flex-row sm:items-center">
+                    <span className="font-medium text-blackblack-100">{activity.title}</span>
+                    <span className="text-xs text-blackblack-60 sm:ml-2">{activity.time}</span>
+                  </div>
+                  <p className="text-sm text-blackblack-60 mt-1">{activity.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-        
-        <div className="flex items-start gap-4">
-          <div className="bg-actionsuccesslight rounded-full p-2">
-            <ListChecks className="h-4 w-4 text-actionsuccess" />
-          </div>
-          <div>
-            <div className="flex items-center">
-              <span className="font-medium">Task completed</span>
-              <span className="text-xs text-blackblack-60 ml-2">4 hours ago</span>
-            </div>
-            <p className="text-sm text-blackblack-60">John Doe completed "Implement product details page"</p>
-          </div>
-        </div>
-        
-        <div className="flex items-start gap-4">
-          <div className="bg-light-themesecondarylight-purple rounded-full p-2">
-            <Users className="h-4 w-4 text-light-themesecondarypurple" />
-          </div>
-          <div>
-            <div className="flex items-center">
-              <span className="font-medium">New team member</span>
-              <span className="text-xs text-blackblack-60 ml-2">Yesterday</span>
-            </div>
-            <p className="text-sm text-blackblack-60">Sarah Johnson joined the Blue Mountain Wicks project</p>
-          </div>
-        </div>
-      </div>
-    </CardContent>
-  </Card>
-);
+      </CardContent>
+    </Card>
+  );
+};
 
 // Main Dashboard Component
 export const Dashboard = (): JSX.Element => {
   // State to manage active tab
   const [activeTab, setActiveTab] = useState("overview");
   
+  // State to manage view type for projects
+  const [projectViewType, setProjectViewType] = useState<'grid' | 'table'>('grid');
+  
   // State to manage projects
   const [projects, setProjects] = useState<Project[]>(initialProjects);
+  
+  // Add more sample projects for demonstration
+  React.useEffect(() => {
+    // Add more sample projects for demonstration purposes
+    if (projects.length === 1) {
+      const additionalProjects: Project[] = [
+        {
+          id: "website-redesign",
+          name: "Corporate Website Redesign",
+          description: "Redesign the corporate website with modern UI/UX principles",
+          status: "Planning",
+          completion: 15,
+          dueDate: "2025-08-20",
+          members: 3,
+          tasks: {
+            total: 18,
+            completed: 3
+          },
+          path: "/projects/website-redesign",
+          type: "website",
+          createdAt: "2025-05-01T10:30:00Z"
+        },
+        {
+          id: "mobile-app",
+          name: "Mobile App Development",
+          description: "Develop a mobile application for customer engagement",
+          status: "In Progress",
+          completion: 45,
+          dueDate: "2025-07-10",
+          members: 5,
+          tasks: {
+            total: 32,
+            completed: 14
+          },
+          path: "/projects/mobile-app",
+          type: "mobile",
+          createdAt: "2025-04-15T14:20:00Z"
+        },
+      ];
+      
+      setProjects(prev => [...prev, ...additionalProjects]);
+    }
+  }, [projects.length]);
   
   // Function to add a new project
   const handleAddProject = (newProject: Project) => {
@@ -318,6 +478,11 @@ export const Dashboard = (): JSX.Element => {
     setProjects(prev => [formattedProject, ...prev]);
   };
 
+  // Toggle project view type
+  const toggleProjectViewType = () => {
+    setProjectViewType(prev => prev === 'grid' ? 'table' : 'grid');
+  };
+
   return (
     <div className="flex h-screen bg-surfaceslightgray-10 overflow-hidden">
       <SidebarByAnima />
@@ -326,7 +491,7 @@ export const Dashboard = (): JSX.Element => {
         <TitlebarByAnima title="Project Management Dashboard" />
         <main className="flex-1 overflow-auto p-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="mb-6 bg-white p-1 rounded-lg">
+            <TabsList className="mb-6 bg-white p-1 rounded-lg shadow-sm">
               <TabsTrigger value="overview" className="px-6">
                 <BarChart3 className="h-4 w-4 mr-2" />
                 Overview
@@ -351,11 +516,38 @@ export const Dashboard = (): JSX.Element => {
             
             <TabsContent value="overview">
               <ProjectStatsSection projects={projects} />
+
+              {/* Analytics summary */}
+              <div className="mb-6">
+                <Card className="border-0 shadow-sm">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg font-medium">Project Performance</CardTitle>
+                      <div className="flex items-center gap-4">
+                        <select className="text-sm bg-white border border-surfaceslightgray-10 rounded-md px-3 py-1">
+                          <option value="this-month">This Month</option>
+                          <option value="last-month">Last Month</option>
+                          <option value="this-quarter">This Quarter</option>
+                          <option value="this-year">This Year</option>
+                        </select>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="h-[230px] flex items-center justify-center">
+                    <div className="flex flex-col items-center text-blackblack-60">
+                      <LineChart className="h-16 w-16 mb-2" />
+                      <p>Analytics charts will be shown here</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                   <ProjectsListSection 
                     projects={projects} 
-                    onAddProject={handleAddProject} 
+                    onAddProject={handleAddProject}
+                    viewType={projectViewType}
                   />
                 </div>
                 <div>
@@ -365,51 +557,96 @@ export const Dashboard = (): JSX.Element => {
             </TabsContent>
             
             <TabsContent value="projects">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-medium">All Projects</h2>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={toggleProjectViewType}
+                    className="flex items-center gap-2"
+                  >
+                    {projectViewType === 'grid' ? 'Table View' : 'Grid View'}
+                  </Button>
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="flex items-center gap-2"
+                  >
+                    <PlusCircle size={16} />
+                    Add Project
+                  </Button>
+                </div>
+              </div>
               <ProjectsListSection 
                 projects={projects} 
-                onAddProject={handleAddProject} 
+                onAddProject={handleAddProject}
+                viewType={projectViewType}
               />
             </TabsContent>
             
             <TabsContent value="tasks">
-              <Card>
-                <CardHeader className="pb-2 space-y-0">
-                  <CardTitle className="text-lg font-normal">Tasks Management</CardTitle>
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-medium">Tasks Management</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-blackblack-60">
+                <CardContent className="py-12 flex flex-col items-center justify-center">
+                  <div className="w-16 h-16 bg-light-themeprimarylight-blue rounded-full flex items-center justify-center text-light-themeprimaryblue mb-4">
+                    <ListChecks size={24} />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">Tasks Coming Soon</h3>
+                  <p className="text-blackblack-60 mb-6 max-w-md text-center">
                     The tasks management section allows you to create, assign, and track tasks across all your projects.
                     This feature will be implemented in a future update.
                   </p>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Bell size={16} />
+                    Get Notified When Ready
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>
             
             <TabsContent value="team">
-              <Card>
-                <CardHeader className="pb-2 space-y-0">
-                  <CardTitle className="text-lg font-normal">Team Management</CardTitle>
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-medium">Team Management</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-blackblack-60">
+                <CardContent className="py-12 flex flex-col items-center justify-center">
+                  <div className="w-16 h-16 bg-light-themesecondarylight-purple rounded-full flex items-center justify-center text-light-themesecondarypurple mb-4">
+                    <Users size={24} />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">Team Management Coming Soon</h3>
+                  <p className="text-blackblack-60 mb-6 max-w-md text-center">
                     The team management section allows you to manage team members, roles, and permissions across your projects.
                     This feature will be implemented in a future update.
                   </p>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Bell size={16} />
+                    Get Notified When Ready
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>
             
             <TabsContent value="settings">
-              <Card>
-                <CardHeader className="pb-2 space-y-0">
-                  <CardTitle className="text-lg font-normal">Dashboard Settings</CardTitle>
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-medium">Dashboard Settings</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-blackblack-60">
-                    The settings section allows you to customize your project management dashboard, 
-                    notification preferences, and default views.
-                    This feature will be implemented in a future update.
+                <CardContent className="py-12 flex flex-col items-center justify-center">
+                  <div className="w-16 h-16 bg-actionsuccesslight rounded-full flex items-center justify-center text-actionsuccess mb-4">
+                    <Settings size={24} />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">Settings Coming Soon</h3>
+                  <p className="text-blackblack-60 mb-6 max-w-md text-center">
+                    The settings section allows you to customize your project management dashboard,
+                    notification preferences, and default views. This feature will be implemented in a future update.
                   </p>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Bell size={16} />
+                    Get Notified When Ready
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>

@@ -1,13 +1,35 @@
-import { ChevronDownIcon } from "lucide-react";
+import { 
+  ChevronDownIcon, 
+  LayoutDashboard, 
+  FolderKanban, 
+  Calendar, 
+  CheckSquare, 
+  FileText, 
+  BarChart3, 
+  Settings, 
+  Users, 
+  Home, 
+  Briefcase,
+  Mail,
+  Bell,
+  MessageSquare,
+  Bookmark,
+  FileBox,
+  PieChart,
+  Library,
+  Layers,
+  User,
+  PlusCircle
+} from "lucide-react";
 import React, { useState } from "react";
 import { Avatar, AvatarImage } from "../../../../components/ui/avatar";
 import { ScrollArea } from "../../../../components/ui/scroll-area";
 import { Separator } from "../../../../components/ui/separator";
 import { Link, useLocation } from "react-router-dom";
 
-// Define navigation item types
+// Define navigation item types with Lucide icon component
 interface NavItem {
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   path?: string;
   isActive?: boolean;
@@ -20,32 +42,32 @@ interface SubNavItem {
   path: string;
 }
 
-// Define navigation sections
+// Define navigation sections with Lucide icons
 const dashboardItems: NavItem[] = [
-  { icon: "/group-15.png", label: "Dashboard", path: "/", isActive: true },
-  { icon: "/group-23.png", label: "Projects", path: "/projects" },
-  { icon: "/group-22.png", label: "Calendar", path: "/calendar" },
-  { icon: "/group-24.png", label: "Tasks", path: "/tasks" },
+  { icon: <LayoutDashboard size={18} />, label: "Dashboard", path: "/", isActive: true },
+  { icon: <FolderKanban size={18} />, label: "Projects", path: "/projects" },
+  { icon: <Calendar size={18} />, label: "Calendar", path: "/calendar" },
+  { icon: <CheckSquare size={18} />, label: "Tasks", path: "/tasks" },
 ];
 
 // Project items
 const projectItems: NavItem[] = [
-  { icon: "/group-20.png", label: "Blue Mountain Wicks", path: "/blue-mountain-wicks" },
+  { icon: <Briefcase size={18} />, label: "Blue Mountain Wicks", path: "/blue-mountain-wicks" },
   // More projects can be added here in the future
 ];
 
 // Tools items
 const toolItems: NavItem[] = [
-  { icon: "/group-25.png", label: "Notes", path: "/notes" },
-  { icon: "/group-26.png", label: "Documents", path: "/documents" },
-  { icon: "/group-27.png", label: "Reports", path: "/reports" },
-  { icon: "/group-28.png", label: "Analytics", path: "/analytics" },
+  { icon: <FileText size={18} />, label: "Notes", path: "/notes" },
+  { icon: <FileBox size={18} />, label: "Documents", path: "/documents" },
+  { icon: <BarChart3 size={18} />, label: "Reports", path: "/reports" },
+  { icon: <PieChart size={18} />, label: "Analytics", path: "/analytics" },
 ];
 
-// Consolidated UI Components
+// Consolidated UI Components with Lucide icons
 const appItems: NavItem[] = [
   { 
-    icon: "/group-19.png", 
+    icon: <Layers size={18} />, 
     label: "UI Components", 
     hasSubmenu: true,
     submenuItems: [
@@ -90,7 +112,7 @@ const appItems: NavItem[] = [
     ]
   },
   { 
-    icon: "/group-13.png", 
+    icon: <Library size={18} />, 
     label: "Example Pages", 
     hasSubmenu: true,
     submenuItems: [
@@ -103,21 +125,21 @@ const appItems: NavItem[] = [
   },
 ];
 
-// Define icon sidebar items
+// Define icon sidebar items with Lucide icons
 const iconSidebarItems = [
-  { icon: "/group-5.png", isActive: true },
-  { icon: "/group-6.png" },
-  { icon: "/group-7.png" },
-  { icon: "/group-8.png" },
+  { icon: <Home size={20} />, isActive: true },
+  { icon: <Mail size={20} /> },
+  { icon: <Bell size={20} /> },
+  { icon: <MessageSquare size={20} /> },
 ];
 
 const iconSidebarItems2 = [
-  { icon: "/group-9.png" },
-  { icon: "/group-10.png" },
-  { icon: "/group-11.png" },
-  { icon: "/group-12.png" },
-  { icon: "/group-13.png" },
-  { icon: "/group-14.png" },
+  { icon: <BarChart3 size={20} /> },
+  { icon: <Settings size={20} /> },
+  { icon: <FileText size={20} /> },
+  { icon: <Users size={20} /> },
+  { icon: <Bookmark size={20} /> },
+  { icon: <User size={20} /> },
 ];
 
 export const SidebarByAnima = (): JSX.Element => {
@@ -142,7 +164,13 @@ export const SidebarByAnima = (): JSX.Element => {
       <div className="flex flex-col w-20 items-center px-3 py-0 border-r border-[#e4ebf0]">
         {/* Logo section */}
         <div className="flex flex-col items-center justify-center gap-2.5 py-[30px] w-full border-b border-dashed border-[#e4ebf0]">
-          <div className="w-10 h-[29px] bg-[url(/logo-icon-svg.svg)] bg-[100%_100%]" />
+          <div className="w-10 h-10 flex items-center justify-center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#0961E7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="#0961E7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke="#0961E7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
         </div>
 
         {/* Navigation icons */}
@@ -152,15 +180,13 @@ export const SidebarByAnima = (): JSX.Element => {
             {iconSidebarItems.map((item, index) => (
               <div
                 key={index}
-                className={`w-12 h-12 flex items-center justify-center rounded-[999px] ${
-                  item.isActive ? "bg-light-themeprimarylight-blue" : ""
-                }`}
+                className={`w-12 h-12 flex items-center justify-center rounded-full transition-colors 
+                  ${item.isActive 
+                    ? "bg-light-themeprimarylight-blue text-light-themeprimaryblue" 
+                    : "text-blackblack-60 hover:bg-surfaceslightgray-10"
+                  }`}
               >
-                <img
-                  className="w-[21.5px] h-[17.5px]"
-                  alt="Navigation icon"
-                  src={item.icon}
-                />
+                {item.icon}
               </div>
             ))}
           </div>
@@ -170,13 +196,9 @@ export const SidebarByAnima = (): JSX.Element => {
             {iconSidebarItems2.map((item, index) => (
               <div
                 key={index}
-                className="w-12 h-12 flex items-center justify-center rounded-[999px]"
+                className="w-12 h-12 flex items-center justify-center rounded-full text-blackblack-60 hover:bg-surfaceslightgray-10 transition-colors"
               >
-                <img
-                  className="w-5 h-5"
-                  alt="Navigation icon"
-                  src={item.icon}
-                />
+                {item.icon}
               </div>
             ))}
           </div>
@@ -205,21 +227,21 @@ export const SidebarByAnima = (): JSX.Element => {
               <Link 
                 key={index}
                 to={item.path || "#"}
-                className={`flex items-center gap-2.5 px-4 py-3 w-full ${
+                className={`flex items-center gap-2.5 px-4 py-3 w-full transition-colors ${
                   isActive(item.path || "") 
                     ? "bg-light-themeprimarylight-blue rounded-[30px]"
-                    : ""
+                    : "hover:bg-surfaceslightgray-10"
                 }`}
               >
-                <div className="w-5 h-5">
-                  <img
-                    className="w-[17px] h-[17px]"
-                    alt={item.label}
-                    src={item.icon}
-                  />
+                <div className={`w-5 h-5 flex items-center justify-center ${
+                  isActive(item.path || "") 
+                    ? "text-light-themeprimaryblue"
+                    : "text-blackblack-60"
+                }`}>
+                  {item.icon}
                 </div>
                 <div
-                  className={`flex-1 mt-[-1.00px] font-normal text-[15px] leading-[21px] ${
+                  className={`flex-1 font-normal text-[15px] leading-[21px] ${
                     isActive(item.path || "") 
                       ? "text-light-themeprimaryblue"
                       : "text-blackblack-100"
@@ -236,11 +258,11 @@ export const SidebarByAnima = (): JSX.Element => {
           {/* Projects section */}
           <div className="flex flex-col items-start w-full">
             <div className="flex items-start justify-between gap-2.5 px-2 py-2 w-full">
-              <div className="w-fit mt-[-1.00px] font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
+              <div className="font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
                 Projects
               </div>
-              <button className="text-light-themeprimaryblue hover:text-light-themeprimaryblue-dark text-sm">
-                + New
+              <button className="text-light-themeprimaryblue hover:text-light-themeprimaryblue-dark text-sm flex items-center">
+                <PlusCircle size={16} className="mr-1" /> New
               </button>
             </div>
 
@@ -248,21 +270,21 @@ export const SidebarByAnima = (): JSX.Element => {
               <Link 
                 key={index}
                 to={item.path || "#"}
-                className={`flex items-center gap-2.5 px-4 py-3 w-full ${
+                className={`flex items-center gap-2.5 px-4 py-3 w-full transition-colors ${
                   isActive(item.path || "") 
                     ? "bg-light-themeprimarylight-blue rounded-[30px]"
-                    : ""
+                    : "hover:bg-surfaceslightgray-10"
                 }`}
               >
-                <div className="w-5 h-5">
-                  <img
-                    className="w-[17px] h-[17px]"
-                    alt={item.label}
-                    src={item.icon}
-                  />
+                <div className={`w-5 h-5 flex items-center justify-center ${
+                  isActive(item.path || "") 
+                    ? "text-light-themeprimaryblue"
+                    : "text-blackblack-60"
+                }`}>
+                  {item.icon}
                 </div>
                 <div
-                  className={`flex-1 mt-[-1.00px] font-normal text-[15px] leading-[21px] ${
+                  className={`flex-1 font-normal text-[15px] leading-[21px] ${
                     isActive(item.path || "") 
                       ? "text-light-themeprimaryblue"
                       : "text-blackblack-100"
@@ -279,7 +301,7 @@ export const SidebarByAnima = (): JSX.Element => {
           {/* Tools section */}
           <div className="flex flex-col items-start w-full">
             <div className="flex items-start gap-2.5 px-0 py-2 w-full">
-              <div className="w-fit mt-[-1.00px] font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
+              <div className="font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
                 Tools
               </div>
             </div>
@@ -288,21 +310,21 @@ export const SidebarByAnima = (): JSX.Element => {
               <Link 
                 key={index}
                 to={item.path || "#"}
-                className={`flex items-center gap-2.5 px-4 py-3 w-full ${
+                className={`flex items-center gap-2.5 px-4 py-3 w-full transition-colors ${
                   isActive(item.path || "") 
                     ? "bg-light-themeprimarylight-blue rounded-[30px]"
-                    : ""
+                    : "hover:bg-surfaceslightgray-10"
                 }`}
               >
-                <div className="w-5 h-5">
-                  <img
-                    className="w-[17px] h-[17px]"
-                    alt={item.label}
-                    src={item.icon}
-                  />
+                <div className={`w-5 h-5 flex items-center justify-center ${
+                  isActive(item.path || "") 
+                    ? "text-light-themeprimaryblue"
+                    : "text-blackblack-60"
+                }`}>
+                  {item.icon}
                 </div>
                 <div
-                  className={`flex-1 mt-[-1.00px] font-normal text-[15px] leading-[21px] ${
+                  className={`flex-1 font-normal text-[15px] leading-[21px] ${
                     isActive(item.path || "") 
                       ? "text-light-themeprimaryblue"
                       : "text-blackblack-100"
@@ -319,7 +341,7 @@ export const SidebarByAnima = (): JSX.Element => {
           {/* UI Components section */}
           <div className="flex flex-col items-start w-full">
             <div className="flex items-start gap-2.5 px-0 py-2 w-full">
-              <div className="w-fit mt-[-1.00px] font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
+              <div className="font-normal text-blackblack-100 text-[15px] tracking-[-0.30px] leading-[21px]">
                 UI Components
               </div>
             </div>
@@ -329,17 +351,17 @@ export const SidebarByAnima = (): JSX.Element => {
                 {item.hasSubmenu ? (
                   <div className="w-full">
                     <div 
-                      className="flex items-center gap-2.5 px-4 py-3 w-full cursor-pointer"
+                      className="flex items-center gap-2.5 px-4 py-3 w-full cursor-pointer hover:bg-surfaceslightgray-10 transition-colors"
                       onClick={() => toggleSubmenu(item.label)}
                     >
-                      <div className="w-5 h-5">
-                        <img className="w-4 h-4" alt={item.label} src={item.icon} />
+                      <div className="w-5 h-5 flex items-center justify-center text-blackblack-60">
+                        {item.icon}
                       </div>
-                      <div className="flex-1 mt-[-1.00px] font-normal text-blackblack-100 text-[15px] leading-[21px]">
+                      <div className="flex-1 font-normal text-blackblack-100 text-[15px] leading-[21px]">
                         {item.label}
                       </div>
                       <ChevronDownIcon 
-                        className={`w-5 h-5 transition-transform ${
+                        className={`w-5 h-5 transition-transform text-blackblack-60 ${
                           expandedMenus.includes(item.label) ? "rotate-180" : ""
                         }`} 
                       />
@@ -351,7 +373,7 @@ export const SidebarByAnima = (): JSX.Element => {
                           <Link
                             key={subIndex}
                             to={subItem.path}
-                            className={`flex items-center py-2 px-3 rounded-[30px] w-full ${
+                            className={`flex items-center py-2 px-3 rounded-[30px] w-full transition-colors ${
                               isActive(subItem.path) 
                                 ? "bg-light-themeprimarylight-blue text-light-themeprimaryblue"
                                 : "text-blackblack-100 hover:bg-surfaceslightgray-10"
@@ -366,12 +388,12 @@ export const SidebarByAnima = (): JSX.Element => {
                 ) : (
                   <Link 
                     to={item.path || "#"}
-                    className="flex items-center gap-2.5 px-4 py-3 w-full"
+                    className="flex items-center gap-2.5 px-4 py-3 w-full hover:bg-surfaceslightgray-10 transition-colors"
                   >
-                    <div className="w-5 h-5">
-                      <img className="w-4 h-4" alt={item.label} src={item.icon} />
+                    <div className="w-5 h-5 flex items-center justify-center text-blackblack-60">
+                      {item.icon}
                     </div>
-                    <div className="flex-1 mt-[-1.00px] font-normal text-blackblack-100 text-[15px] leading-[21px]">
+                    <div className="flex-1 font-normal text-blackblack-100 text-[15px] leading-[21px]">
                       {item.label}
                     </div>
                   </Link>
